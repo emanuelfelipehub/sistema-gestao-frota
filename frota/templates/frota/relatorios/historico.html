@@ -1,0 +1,63 @@
+{% extends 'frota/base.html' %}
+
+{% block title %}Histórico do Veículo{% endblock %}
+{% block page_title %}Relatório de Histórico do Veículo{% endblock %}
+{% block page_subtitle %}<p class="topbar__subtitle">Consulte todas as manutenções e peças trocadas em um veículo pela placa.</p>{% endblock %}
+
+{% block content %}
+<div class="table-toolbar">
+    <form method="get" class="search-form">
+        <input type="text" name="placa" value="{{ placa_query }}" placeholder="Digite a placa do veículo (ex.: ABC1D23)">
+        <button type="submit" class="btn btn-primary btn-sm">Buscar</button>
+    </form>
+</div>
+
+{% if placa_query %}
+    {% if manutencoes %}
+    <div class="detail-grid">
+        <div class="detail-item">
+            <div class="detail-item__label">Manutenções encontradas</div>
+            <div class="detail-item__value">{{ manutencoes|length }}</div>
+        </div>
+        <div class="detail-item">
+            <div class="detail-item__label">Custo total em peças</div>
+            <div class="detail-item__value">R$ {{ custo_total|floatformat:2 }}</div>
+        </div>
+    </div>
+
+    {% for m in manutencoes %}
+    <div class="panel" style="margin-bottom:1rem;">
+        <div class="panel__header">
+            <h3><span class="placa-badge">{{ m.veiculo.placa }}</span> {{ m.get_tipo_display }} — {{ m.data|date:"d/m/Y" }}</h3>
+            <span>Mecânico: {{ m.mecanico.nome }}</span>
+        </div>
+        <div class="panel__body">
+            <p>{{ m.descricao }}</p>
+            {% if m.itens.all %}
+            <table class="data-table">
+                <thead><tr><th>Peça</th><th>Quantidade</th><th>Subtotal</th></tr></thead>
+                <tbody>
+                    {% for item in m.itens.all %}
+                    <tr><td>{{ item.peca.nome }}</td><td>{{ item.quantidade }}</td><td>R$ {{ item.subtotal|floatformat:2 }}</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="help-text">Nenhuma peça registrada para esta manutenção.</p>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="empty-state">
+        <h3>Nenhuma manutenção encontrada</h3>
+        <p>Não há registros de manutenção para a placa "{{ placa_query }}".</p>
+    </div>
+    {% endif %}
+{% else %}
+<div class="empty-state">
+    <h3>Digite uma placa para consultar</h3>
+    <p>O histórico completo de manutenções e peças trocadas será exibido aqui.</p>
+</div>
+{% endif %}
+{% endblock %}

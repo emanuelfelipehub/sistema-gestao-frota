@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Painel{% endblock %} · Sistema de Gestão de Frota</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <div class="sidebar__brand">
+                <span class="sidebar__brand-mark">FA</span>
+                <span class="sidebar__brand-text">FrotaAuto<small>Gestão de Frota &amp; Manutenção</small></span>
+            </div>
+            <nav class="sidebar__nav">
+                <a class="sidebar__link {% if request.resolver_match.url_name == 'home' %}is-active{% endif %}" href="{% url 'home' %}">
+                    <span class="sidebar__icon">&#9635;</span> Painel
+                </a>
+
+                <div class="sidebar__section-label">Cadastros</div>
+                <a class="sidebar__link {% if '/veiculos/' in request.path %}is-active{% endif %}" href="{% url 'veiculo_list' %}">
+                    <span class="sidebar__icon">&#128663;</span> Veículos
+                </a>
+                <a class="sidebar__link {% if '/motoristas/' in request.path %}is-active{% endif %}" href="{% url 'motorista_list' %}">
+                    <span class="sidebar__icon">&#128100;</span> Motoristas
+                </a>
+                <a class="sidebar__link {% if '/mecanicos/' in request.path %}is-active{% endif %}" href="{% url 'mecanico_list' %}">
+                    <span class="sidebar__icon">&#128295;</span> Mecânicos
+                </a>
+                <a class="sidebar__link {% if '/pecas/' in request.path %}is-active{% endif %}" href="{% url 'peca_list' %}">
+                    <span class="sidebar__icon">&#9881;</span> Peças
+                </a>
+                <a class="sidebar__link {% if '/manutencoes/' in request.path %}is-active{% endif %}" href="{% url 'manutencao_list' %}">
+                    <span class="sidebar__icon">&#128736;</span> Manutenções
+                </a>
+
+                <div class="sidebar__section-label">Relatórios</div>
+                <a class="sidebar__link {% if request.resolver_match.url_name == 'relatorio_estoque' %}is-active{% endif %}" href="{% url 'relatorio_estoque' %}">
+                    <span class="sidebar__icon">&#9888;</span> Estoque Crítico
+                </a>
+                <a class="sidebar__link {% if request.resolver_match.url_name == 'relatorio_historico' %}is-active{% endif %}" href="{% url 'relatorio_historico' %}">
+                    <span class="sidebar__icon">&#128203;</span> Histórico do Veículo
+                </a>
+            </nav>
+        </aside>
+
+        <div class="main">
+            <header class="topbar">
+                <div style="display:flex; align-items:center; gap:0.9rem;">
+                    <button class="menu-toggle" data-menu-toggle type="button" aria-label="Abrir menu">&#9776;</button>
+                    <div>
+                        <h1 class="topbar__title">{% block page_title %}Painel{% endblock %}</h1>
+                        {% block page_subtitle %}{% endblock %}
+                    </div>
+                </div>
+                {% block page_actions %}{% endblock %}
+            </header>
+
+            <main class="content {% block content_width %}{% endblock %}">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+                {% block content %}{% endblock %}
+            </main>
+
+            <footer class="site-footer">
+                Sistema de Gestão de Frota e Manutenção Automotiva — Atividade prática desenvolvida em Django.
+            </footer>
+        </div>
+    </div>
+
+    <script src="{% static 'js/app.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

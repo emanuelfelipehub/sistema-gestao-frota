@@ -1,0 +1,33 @@
+{% extends 'frota/base.html' %}
+
+{% block title %}Estoque Crítico{% endblock %}
+{% block page_title %}Relatório de Estoque Crítico{% endblock %}
+{% block page_subtitle %}<p class="topbar__subtitle">Peças com quantidade abaixo do estoque mínimo ideal.</p>{% endblock %}
+
+{% block content %}
+<div class="table-wrap">
+    {% if pecas %}
+    <table class="data-table">
+        <thead>
+            <tr><th>Peça</th><th>Fabricante</th><th>Estoque atual</th><th>Estoque mínimo</th><th>Faltam</th></tr>
+        </thead>
+        <tbody>
+            {% for peca in pecas %}
+            <tr>
+                <td><a href="{% url 'peca_detail' peca.pk %}">{{ peca.nome }}</a></td>
+                <td>{{ peca.fabricante }}</td>
+                <td><span class="badge badge-critico">{{ peca.qtd_estoque }}</span></td>
+                <td>{{ peca.estoque_minimo }}</td>
+                <td>{{ peca.estoque_faltante }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">
+        <h3>Nenhuma peça em estoque crítico</h3>
+        <p>Todas as peças estão com quantidade igual ou acima do estoque mínimo ideal.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

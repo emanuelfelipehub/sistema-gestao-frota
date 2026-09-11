@@ -1,0 +1,109 @@
+{% extends 'frota/base.html' %}
+
+{% block title %}{{ titulo }}{% endblock %}
+{% block page_title %}{{ titulo }}{% endblock %}
+{% block content_width %}content--narrow{% endblock %}
+
+{% block content %}
+<form method="post" novalidate>
+    {% csrf_token %}
+    <div class="form-card">
+        <h3 style="margin-bottom:1rem;">Dados da manutenção</h3>
+        {% for field in form %}
+        <div class="field-group">
+            {{ field.label_tag }}
+            {{ field }}
+            {% if field.help_text %}<div class="help-text">{{ field.help_text }}</div>{% endif %}
+            {% if field.errors %}
+            <ul class="error-list">
+                {% for error in field.errors %}<li>{{ error }}</li>{% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="form-card" style="margin-top:1.25rem;">
+        <h3 style="margin-bottom:0.35rem;">Peças utilizadas</h3>
+        <p class="help-text" style="margin-bottom:1rem;">
+            Informe as peças aplicadas nesta manutenção. O estoque de cada peça é baixado
+            automaticamente ao salvar. Deixe o valor unitário em branco para usar o preço
+            atual cadastrado da peça.
+        </p>
+
+        {{ formset.management_form }}
+        {% if formset.non_form_errors %}
+        <ul class="error-list">
+            {% for error in formset.non_form_errors %}<li>{{ error }}</li>{% endfor %}
+        </ul>
+        {% endif %}
+
+        <div class="item-formset" id="item-formset">
+            {% for item_form in formset.forms %}
+            <div class="item-formset__row" data-formset-row>
+                {{ item_form.id }}
+                <div class="field-group" style="margin-bottom:0;">
+                    {% if forloop.first %}<label>Peça</label>{% endif %}
+                    {{ item_form.peca }}
+                    {% if item_form.peca.errors %}<ul class="error-list">{% for e in item_form.peca.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+                </div>
+                <div class="field-group" style="margin-bottom:0;">
+                    {% if forloop.first %}<label>Quantidade</label>{% endif %}
+                    {{ item_form.quantidade }}
+                    {% if item_form.quantidade.errors %}<ul class="error-list">{% for e in item_form.quantidade.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+                </div>
+                <div class="field-group" style="margin-bottom:0;">
+                    {% if forloop.first %}<label>Valor unitário (R$)</label>{% endif %}
+                    {{ item_form.valor_unitario }}
+                    {% if item_form.valor_unitario.errors %}<ul class="error-list">{% for e in item_form.valor_unitario.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+                </div>
+                <div class="item-formset__delete">
+                    {% if item_form.DELETE %}
+                        <label class="help-text">{{ item_form.DELETE }} Remover</label>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <button type="button" class="btn btn-secondary btn-sm" id="add-item-row" style="margin-top:0.9rem;">+ Adicionar peça</button>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Salvar manutenção</button>
+            <a href="{% url voltar_url %}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </div>
+</form>
+
+<template id="empty-form-template">
+    <div class="item-formset__row" data-formset-row>
+        {{ formset.empty_form.id }}
+        <div class="field-group" style="margin-bottom:0;">{{ formset.empty_form.peca }}</div>
+        <div class="field-group" style="margin-bottom:0;">{{ formset.empty_form.quantidade }}</div>
+        <div class="field-group" style="margin-bottom:0;">{{ formset.empty_form.valor_unitario }}</div>
+        <div class="item-formset__delete">{{ formset.empty_form.DELETE }}</div>
+    </div>
+</template>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var addButton = document.getElementById('add-item-row');
+    var formsetDiv = document.getElementById('item-formset');
+    var totalFormsInput = document.getElementById('id_itens-TOTAL_FORMS');
+    var template = document.getElementById('empty-form-template');
+
+    if (!addButton || !template) { return; }
+
+    addButton.addEventListener('click', function () {
+        var index = parseInt(totalFormsInput.value, 10);
+        var html = template.innerHTML.replace(/__prefix__/g, index);
+        var wrapper = document.createElement('div');
+        wrapper.innerHTML = html.trim();
+        formsetDiv.appendChild(wrapper.firstElementChild);
+        totalFormsInput.value = index + 1;
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,6 @@
+Django>=5.0,<5.2
+
+# Descomente a linha abaixo se for usar o banco MySQL (ver gestao_frota/frota.sql)
+# em vez do SQLite padrão. Requer as bibliotecas de desenvolvimento do MySQL
+# instaladas no sistema operacional.
+# mysqlclient>=2.2

@@ -1,0 +1,19 @@
+{% if is_paginated %}
+<ul class="pagination">
+    {% if page_obj.has_previous %}
+        <li><a href="?{% if q %}q={{ q }}&amp;{% endif %}page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+    {% endif %}
+    {% for num in page_obj.paginator.page_range %}
+        <li {% if num == page_obj.number %}class="is-active"{% endif %}>
+            {% if num == page_obj.number %}
+                <span>{{ num }}</span>
+            {% else %}
+                <a href="?{% if q %}q={{ q }}&amp;{% endif %}page={{ num }}">{{ num }}</a>
+            {% endif %}
+        </li>
+    {% endfor %}
+    {% if page_obj.has_next %}
+        <li><a href="?{% if q %}q={{ q }}&amp;{% endif %}page={{ page_obj.next_page_number }}">&raquo;</a></li>
+    {% endif %}
+</ul>
+{% endif %}

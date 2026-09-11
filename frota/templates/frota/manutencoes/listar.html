@@ -1,0 +1,52 @@
+{% extends 'frota/base.html' %}
+
+{% block title %}Manutenções{% endblock %}
+{% block page_title %}Manutenções{% endblock %}
+{% block page_subtitle %}<p class="topbar__subtitle">{{ page_obj.paginator.count }} manutenção(ões) registrada(s).</p>{% endblock %}
+{% block page_actions %}<a href="{% url 'manutencao_create' %}" class="btn btn-primary">+ Registrar manutenção</a>{% endblock %}
+
+{% block content %}
+<div class="table-toolbar">
+    <form method="get" class="search-form">
+        <input type="text" name="q" value="{{ q }}" placeholder="Buscar por placa do veículo">
+        <button type="submit" class="btn btn-secondary btn-sm">Buscar</button>
+    </form>
+</div>
+
+<div class="table-wrap">
+    {% if manutencoes %}
+    <table class="data-table">
+        <thead>
+            <tr><th>Data</th><th>Veículo</th><th>Tipo</th><th>Mecânico</th><th>Custo peças</th><th class="col-actions">Ações</th></tr>
+        </thead>
+        <tbody>
+            {% for m in manutencoes %}
+            <tr>
+                <td>{{ m.data|date:"d/m/Y" }}</td>
+                <td><a href="{% url 'manutencao_detail' m.pk %}"><span class="placa-badge">{{ m.veiculo.placa }}</span> {{ m.veiculo.modelo }}</a></td>
+                <td>
+                    {% if m.tipo == 'CORRETIVA' %}<span class="badge badge-critico">Corretiva</span>
+                    {% else %}<span class="badge badge-ok">Preventiva</span>{% endif %}
+                </td>
+                <td>{{ m.mecanico.nome }}</td>
+                <td>R$ {{ m.custo_total|floatformat:2 }}</td>
+                <td class="col-actions">
+                    <a href="{% url 'manutencao_detail' m.pk %}" class="btn btn-secondary btn-sm">Ver</a>
+                    <a href="{% url 'manutencao_update' m.pk %}" class="btn btn-secondary btn-sm">Editar</a>
+                    <a href="{% url 'manutencao_delete' m.pk %}" class="btn btn-danger btn-sm">Excluir</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">
+        <h3>Nenhuma manutenção encontrada</h3>
+        <p>Registre a primeira manutenção e baixe o estoque de peças automaticamente.</p>
+        <a href="{% url 'manutencao_create' %}" class="btn btn-primary">+ Registrar manutenção</a>
+    </div>
+    {% endif %}
+</div>
+
+{% include 'frota/partials/paginacao.html' %}
+{% endblock %}

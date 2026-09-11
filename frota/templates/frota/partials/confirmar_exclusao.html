@@ -1,0 +1,18 @@
+{% extends 'frota/base.html' %}
+
+{% block title %}Confirmar exclusão{% endblock %}
+{% block page_title %}Confirmar exclusão{% endblock %}
+{% block content_width %}content--narrow{% endblock %}
+
+{% block content %}
+<div class="form-card">
+    <p>Tem certeza que deseja excluir <strong>{{ object }}</strong>? Esta ação não pode ser desfeita.</p>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-danger">Sim, excluir</button>
+            <a href="{% url voltar_url %}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

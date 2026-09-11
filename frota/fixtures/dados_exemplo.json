@@ -1,0 +1,231 @@
+[
+{
+  "model": "frota.veiculo",
+  "pk": 1,
+  "fields": {
+    "placa": "ABC1D23",
+    "modelo": "Fiat Strada",
+    "ano": 2021,
+    "quilometragem": "42500.00",
+    "criado_em": "2026-09-11T00:23:33.230Z",
+    "atualizado_em": "2026-09-11T00:23:33.230Z"
+  }
+},
+{
+  "model": "frota.veiculo",
+  "pk": 2,
+  "fields": {
+    "placa": "JBR4E56",
+    "modelo": "VW Saveiro",
+    "ano": 2019,
+    "quilometragem": "78320.00",
+    "criado_em": "2026-09-11T00:23:33.233Z",
+    "atualizado_em": "2026-09-11T00:23:33.233Z"
+  }
+},
+{
+  "model": "frota.veiculo",
+  "pk": 3,
+  "fields": {
+    "placa": "OWX9F12",
+    "modelo": "Iveco Daily",
+    "ano": 2022,
+    "quilometragem": "15900.00",
+    "criado_em": "2026-09-11T00:23:33.234Z",
+    "atualizado_em": "2026-09-11T00:23:33.234Z"
+  }
+},
+{
+  "model": "frota.veiculo",
+  "pk": 4,
+  "fields": {
+    "placa": "QRT2A87",
+    "modelo": "Ford Ka",
+    "ano": 2018,
+    "quilometragem": "101200.00",
+    "criado_em": "2026-09-11T00:23:33.235Z",
+    "atualizado_em": "2026-09-11T00:23:33.235Z"
+  }
+},
+{
+  "model": "frota.motorista",
+  "pk": 1,
+  "fields": {
+    "cnh": "11122233344",
+    "nome": "João Pereira",
+    "categoria": "B",
+    "telefone": "(62) 99811-2233",
+    "ativo": true
+  }
+},
+{
+  "model": "frota.motorista",
+  "pk": 2,
+  "fields": {
+    "cnh": "22233344455",
+    "nome": "Marta Nunes",
+    "categoria": "AB",
+    "telefone": "(62) 99822-3344",
+    "ativo": true
+  }
+},
+{
+  "model": "frota.motorista",
+  "pk": 3,
+  "fields": {
+    "cnh": "33344455566",
+    "nome": "Ricardo Alves",
+    "categoria": "D",
+    "telefone": "(62) 99833-4455",
+    "ativo": false
+  }
+},
+{
+  "model": "frota.mecanico",
+  "pk": 1,
+  "fields": {
+    "nome": "Carlos Menezes",
+    "especialidade": "Motor e câmbio",
+    "turno": "MANHA",
+    "ativo": true
+  }
+},
+{
+  "model": "frota.mecanico",
+  "pk": 2,
+  "fields": {
+    "nome": "Fernanda Lima",
+    "especialidade": "Elétrica automotiva",
+    "turno": "TARDE",
+    "ativo": true
+  }
+},
+{
+  "model": "frota.peca",
+  "pk": 1,
+  "fields": {
+    "nome": "Filtro de óleo",
+    "fabricante": "Bosch",
+    "valor": "38.90",
+    "qtd_estoque": 2,
+    "estoque_minimo": 8
+  }
+},
+{
+  "model": "frota.peca",
+  "pk": 2,
+  "fields": {
+    "nome": "Pastilha de freio (jogo)",
+    "fabricante": "Fras-le",
+    "valor": "129.90",
+    "qtd_estoque": 6,
+    "estoque_minimo": 4
+  }
+},
+{
+  "model": "frota.peca",
+  "pk": 3,
+  "fields": {
+    "nome": "Correia dentada",
+    "fabricante": "Gates",
+    "valor": "89.50",
+    "qtd_estoque": 1,
+    "estoque_minimo": 3
+  }
+},
+{
+  "model": "frota.peca",
+  "pk": 4,
+  "fields": {
+    "nome": "Bateria 60Ah",
+    "fabricante": "Moura",
+    "valor": "459.00",
+    "qtd_estoque": 5,
+    "estoque_minimo": 2
+  }
+},
+{
+  "model": "frota.peca",
+  "pk": 5,
+  "fields": {
+    "nome": "Óleo de motor 5W30 (litro)",
+    "fabricante": "Ipiranga",
+    "valor": "42.00",
+    "qtd_estoque": 24,
+    "estoque_minimo": 10
+  }
+},
+{
+  "model": "frota.manutencao",
+  "pk": 1,
+  "fields": {
+    "veiculo": 1,
+    "mecanico": 1,
+    "data": "2026-08-12",
+    "tipo": "PREVENTIVA",
+    "descricao": "Troca de óleo e filtro conforme plano de manutenção preventiva."
+  }
+},
+{
+  "model": "frota.manutencao",
+  "pk": 2,
+  "fields": {
+    "veiculo": 2,
+    "mecanico": 2,
+    "data": "2026-08-25",
+    "tipo": "CORRETIVA",
+    "descricao": "Veículo apresentou ruído ao frear; pastilhas dianteiras substituídas."
+  }
+},
+{
+  "model": "frota.manutencao",
+  "pk": 3,
+  "fields": {
+    "veiculo": 3,
+    "mecanico": 1,
+    "data": "2026-09-02",
+    "tipo": "CORRETIVA",
+    "descricao": "Substituição de correia dentada por desgaste identificado em inspeção."
+  }
+},
+{
+  "model": "frota.itemmanutencao",
+  "pk": 1,
+  "fields": {
+    "manutencao": 1,
+    "peca": 5,
+    "quantidade": 4,
+    "valor_unitario": "42.00"
+  }
+},
+{
+  "model": "frota.itemmanutencao",
+  "pk": 2,
+  "fields": {
+    "manutencao": 1,
+    "peca": 1,
+    "quantidade": 1,
+    "valor_unitario": "38.90"
+  }
+},
+{
+  "model": "frota.itemmanutencao",
+  "pk": 3,
+  "fields": {
+    "manutencao": 2,
+    "peca": 2,
+    "quantidade": 1,
+    "valor_unitario": "129.90"
+  }
+},
+{
+  "model": "frota.itemmanutencao",
+  "pk": 4,
+  "fields": {
+    "manutencao": 3,
+    "peca": 3,
+    "quantidade": 1,
+    "valor_unitario": "89.50"
+  }
+}
+]

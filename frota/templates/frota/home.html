@@ -1,0 +1,84 @@
+{% extends 'frota/base.html' %}
+
+{% block title %}Painel{% endblock %}
+{% block page_title %}Painel{% endblock %}
+{% block page_subtitle %}<p class="topbar__subtitle">Visão geral da frota, manutenções e estoque.</p>{% endblock %}
+
+{% block content %}
+<div class="stat-grid">
+    <div class="stat-card">
+        <div class="stat-card__valor">{{ total_veiculos }}</div>
+        <div class="stat-card__label">Veículos na frota</div>
+    </div>
+    <div class="stat-card stat-card--ok">
+        <div class="stat-card__valor">{{ total_motoristas }}</div>
+        <div class="stat-card__label">Motoristas ativos</div>
+    </div>
+    <div class="stat-card stat-card--ok">
+        <div class="stat-card__valor">{{ total_mecanicos }}</div>
+        <div class="stat-card__label">Mecânicos ativos</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card__valor">{{ manutencoes_no_mes }}</div>
+        <div class="stat-card__label">Manutenções este mês</div>
+    </div>
+    <div class="stat-card {% if pecas_criticas %}stat-card--critico{% endif %}">
+        <div class="stat-card__valor">{{ pecas_criticas|length }}</div>
+        <div class="stat-card__label">Peças em estoque crítico</div>
+    </div>
+</div>
+
+<div class="panel-grid">
+    <div class="panel">
+        <div class="panel__header">
+            <h3>Últimas manutenções</h3>
+            <a href="{% url 'manutencao_list' %}" class="btn btn-secondary btn-sm">Ver todas</a>
+        </div>
+        <div class="panel__body panel__body--flush">
+            {% if ultimas_manutencoes %}
+            <table class="data-table">
+                <thead>
+                    <tr><th>Veículo</th><th>Tipo</th><th>Mecânico</th><th>Data</th></tr>
+                </thead>
+                <tbody>
+                    {% for m in ultimas_manutencoes %}
+                    <tr>
+                        <td><a href="{% url 'manutencao_detail' m.pk %}"><span class="placa-badge">{{ m.veiculo.placa }}</span></a></td>
+                        <td>{{ m.get_tipo_display }}</td>
+                        <td>{{ m.mecanico.nome }}</td>
+                        <td>{{ m.data|date:"d/m/Y" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="table-empty">Nenhuma manutenção registrada ainda.</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel__header">
+            <h3>Estoque crítico</h3>
+            <a href="{% url 'relatorio_estoque' %}" class="btn btn-secondary btn-sm">Ver relatório</a>
+        </div>
+        <div class="panel__body panel__body--flush">
+            {% if pecas_criticas %}
+            <table class="data-table">
+                <thead><tr><th>Peça</th><th>Estoque</th></tr></thead>
+                <tbody>
+                    {% for peca in pecas_criticas %}
+                    <tr>
+                        <td>{{ peca.nome }}</td>
+                        <td><span class="badge badge-critico">{{ peca.qtd_estoque }} / mín. {{ peca.estoque_minimo }}</span></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="table-empty">Nenhuma peça abaixo do estoque mínimo.</div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

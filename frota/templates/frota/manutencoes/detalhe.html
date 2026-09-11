@@ -1,0 +1,64 @@
+{% extends 'frota/base.html' %}
+
+{% block title %}Manutenção — {{ manutencao.veiculo.placa }}{% endblock %}
+{% block page_title %}Manutenção de <span class="placa-badge">{{ manutencao.veiculo.placa }}</span>{% endblock %}
+{% block page_actions %}
+    <a href="{% url 'manutencao_update' manutencao.pk %}" class="btn btn-secondary">Editar</a>
+    <a href="{% url 'manutencao_delete' manutencao.pk %}" class="btn btn-danger">Excluir</a>
+{% endblock %}
+
+{% block content %}
+<div class="breadcrumb"><a href="{% url 'manutencao_list' %}">Manutenções</a> / {{ manutencao.veiculo.placa }} — {{ manutencao.data|date:"d/m/Y" }}</div>
+
+<div class="detail-grid">
+    <div class="detail-item">
+        <div class="detail-item__label">Veículo</div>
+        <div class="detail-item__value">{{ manutencao.veiculo.modelo }}</div>
+    </div>
+    <div class="detail-item">
+        <div class="detail-item__label">Mecânico responsável</div>
+        <div class="detail-item__value">{{ manutencao.mecanico.nome }}</div>
+    </div>
+    <div class="detail-item">
+        <div class="detail-item__label">Tipo</div>
+        <div class="detail-item__value">{{ manutencao.get_tipo_display }}</div>
+    </div>
+    <div class="detail-item">
+        <div class="detail-item__label">Data</div>
+        <div class="detail-item__value">{{ manutencao.data|date:"d/m/Y" }}</div>
+    </div>
+</div>
+
+<div class="panel" style="margin-bottom:1.25rem;">
+    <div class="panel__header"><h3>Descrição do serviço</h3></div>
+    <div class="panel__body">
+        <p style="margin:0;">{{ manutencao.descricao|linebreaksbr }}</p>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="panel__header">
+        <h3>Peças utilizadas</h3>
+        <strong>Total: R$ {{ manutencao.custo_total|floatformat:2 }}</strong>
+    </div>
+    <div class="panel__body panel__body--flush">
+        {% if itens %}
+        <table class="data-table">
+            <thead><tr><th>Peça</th><th>Quantidade</th><th>Valor unitário</th><th>Subtotal</th></tr></thead>
+            <tbody>
+                {% for item in itens %}
+                <tr>
+                    <td>{{ item.peca.nome }}</td>
+                    <td>{{ item.quantidade }}</td>
+                    <td>R$ {{ item.valor_unitario|floatformat:2 }}</td>
+                    <td>R$ {{ item.subtotal|floatformat:2 }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="table-empty">Nenhuma peça foi utilizada nesta manutenção.</div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

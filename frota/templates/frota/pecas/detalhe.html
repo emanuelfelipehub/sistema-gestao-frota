@@ -1,0 +1,34 @@
+{% extends 'frota/base.html' %}
+
+{% block title %}{{ peca.nome }}{% endblock %}
+{% block page_title %}{{ peca.nome }}{% endblock %}
+{% block page_actions %}
+    <a href="{% url 'peca_update' peca.pk %}" class="btn btn-secondary">Editar</a>
+    <a href="{% url 'peca_delete' peca.pk %}" class="btn btn-danger">Excluir</a>
+{% endblock %}
+
+{% block content %}
+<div class="breadcrumb"><a href="{% url 'peca_list' %}">Peças</a> / {{ peca.nome }}</div>
+
+<div class="detail-grid">
+    <div class="detail-item">
+        <div class="detail-item__label">Fabricante</div>
+        <div class="detail-item__value">{{ peca.fabricante }}</div>
+    </div>
+    <div class="detail-item">
+        <div class="detail-item__label">Valor unitário</div>
+        <div class="detail-item__value">R$ {{ peca.valor|floatformat:2 }}</div>
+    </div>
+    <div class="detail-item">
+        <div class="detail-item__label">Estoque atual</div>
+        <div class="detail-item__value">
+            {{ peca.qtd_estoque }}
+            {% if peca.estoque_critico %}<span class="badge badge-critico">crítico</span>{% endif %}
+        </div>
+    </div>
+    <div class="detail-item">
+        <div class="detail-item__label">Estoque mínimo ideal</div>
+        <div class="detail-item__value">{{ peca.estoque_minimo }}</div>
+    </div>
+</div>
+{% endblock %}

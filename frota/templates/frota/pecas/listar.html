@@ -1,0 +1,54 @@
+{% extends 'frota/base.html' %}
+
+{% block title %}Peças{% endblock %}
+{% block page_title %}Peças{% endblock %}
+{% block page_subtitle %}<p class="topbar__subtitle">{{ page_obj.paginator.count }} peça(s) no catálogo.</p>{% endblock %}
+{% block page_actions %}<a href="{% url 'peca_create' %}" class="btn btn-primary">+ Nova peça</a>{% endblock %}
+
+{% block content %}
+<div class="table-toolbar">
+    <form method="get" class="search-form">
+        <input type="text" name="q" value="{{ q }}" placeholder="Buscar por nome ou fabricante">
+        <button type="submit" class="btn btn-secondary btn-sm">Buscar</button>
+    </form>
+</div>
+
+<div class="table-wrap">
+    {% if pecas %}
+    <table class="data-table">
+        <thead>
+            <tr><th>Peça</th><th>Fabricante</th><th>Valor</th><th>Estoque</th><th class="col-actions">Ações</th></tr>
+        </thead>
+        <tbody>
+            {% for peca in pecas %}
+            <tr>
+                <td><a href="{% url 'peca_detail' peca.pk %}">{{ peca.nome }}</a></td>
+                <td>{{ peca.fabricante }}</td>
+                <td>R$ {{ peca.valor|floatformat:2 }}</td>
+                <td>
+                    {% if peca.estoque_critico %}
+                        <span class="badge badge-critico">{{ peca.qtd_estoque }} (mín. {{ peca.estoque_minimo }})</span>
+                    {% else %}
+                        <span class="badge badge-ok">{{ peca.qtd_estoque }}</span>
+                    {% endif %}
+                </td>
+                <td class="col-actions">
+                    <a href="{% url 'peca_detail' peca.pk %}" class="btn btn-secondary btn-sm">Ver</a>
+                    <a href="{% url 'peca_update' peca.pk %}" class="btn btn-secondary btn-sm">Editar</a>
+                    <a href="{% url 'peca_delete' peca.pk %}" class="btn btn-danger btn-sm">Excluir</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">
+        <h3>Nenhuma peça encontrada</h3>
+        <p>Cadastre as peças utilizadas nas manutenções da frota.</p>
+        <a href="{% url 'peca_create' %}" class="btn btn-primary">+ Nova peça</a>
+    </div>
+    {% endif %}
+</div>
+
+{% include 'frota/partials/paginacao.html' %}
+{% endblock %}

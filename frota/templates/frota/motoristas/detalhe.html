@@ -1,0 +1,34 @@
+{% extends 'frota/base.html' %}
+
+{% block title %}{{ motorista.nome }}{% endblock %}
+{% block page_title %}{{ motorista.nome }}{% endblock %}
+{% block page_actions %}
+    <a href="{% url 'motorista_update' motorista.pk %}" class="btn btn-secondary">Editar</a>
+    <a href="{% url 'motorista_delete' motorista.pk %}" class="btn btn-danger">Excluir</a>
+{% endblock %}
+
+{% block content %}
+<div class="breadcrumb"><a href="{% url 'motorista_list' %}">Motoristas</a> / {{ motorista.nome }}</div>
+
+<div class="detail-grid">
+    <div class="detail-item">
+        <div class="detail-item__label">CNH</div>
+        <div class="detail-item__value">{{ motorista.cnh }}</div>
+    </div>
+    <div class="detail-item">
+        <div class="detail-item__label">Categoria</div>
+        <div class="detail-item__value">{{ motorista.get_categoria_display }}</div>
+    </div>
+    <div class="detail-item">
+        <div class="detail-item__label">Telefone</div>
+        <div class="detail-item__value">{{ motorista.telefone }}</div>
+    </div>
+    <div class="detail-item">
+        <div class="detail-item__label">Situação</div>
+        <div class="detail-item__value">
+            {% if motorista.ativo %}<span class="badge badge-ok">Ativo</span>
+            {% else %}<span class="badge badge-neutro">Inativo</span>{% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
