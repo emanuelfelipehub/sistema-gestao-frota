@@ -90,41 +90,4 @@ sistema-gestao-frota/
     └── templates/frota/
 ```
 
-## Design
 
-A interface segue uma identidade visual de oficina/industrial, pensada para
-o domínio do sistema (gestão de frota e manutenção), em vez de um template
-genérico:
-
-- **Cores**: grafite e concreto como base, azul diesel para ações
-  primárias, e amarelo de sinalização/vermelho usados apenas como indicação
-  funcional de alerta ou risco (nunca como decoração).
-- **Tipografia**: `Big Shoulders Display` (títulos e números, com o
-  traço de chapa estampada) combinada com `Inter` (texto de interface,
-  legível em tabelas densas).
-- **Placas de veículo** são exibidas em um distintivo próprio, inspirado em
-  uma chapa real.
-
-## Sobre esta versão
-
-Este repositório foi revisado a partir de uma versão inicial incompleta.
-Principais correções e adições:
-
-- Arquivos essenciais do Django que estavam vazios/ausentes: `manage.py`,
-  `wsgi.py`, `asgi.py`, `__init__.py`/`apps.py`/`admin.py` do app `frota`,
-  pasta `migrations/`.
-- CRUD implementado para todas as 5 entidades exigidas (o projeto original
-  só tinha Veículo) e para a tabela associativa `ItemManutencao`, via
-  formset dentro do formulário de Manutenção.
-- Baixa e devolução automática de estoque ao registrar/editar/excluir uma
-  manutenção (caso de uso "Baixar Estoque de Peça" do enunciado), com
-  validação de estoque insuficiente.
-- Validações de campo adicionadas em todos os formulários.
-- Proteção contra exclusão de registros referenciados (ex.: peça usada em
-  uma manutenção).
-- CSS profissional próprio, substituindo a ausência de estilo do projeto
-  original.
-- Documentação de MER, casos de uso e arquitetura (`DOCUMENTACAO.md`).
-- `requirements.txt` movido para a raiz do projeto (local padrão) e
-  `.gitignore` adicionado (o projeto original incluía a pasta `venv/`
-  dentro do próprio repositório, o que não é recomendado).
